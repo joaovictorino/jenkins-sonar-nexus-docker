@@ -1,0 +1,35 @@
+version: '3'
+
+networks:
+  devops:
+    driver: bridge
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-server
+    user: root
+    privileged: true
+    ports:
+      - 8080:8080
+      - 50000:50000
+    networks:
+      - devops
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube-server
+    ports:
+      - 9000:9000
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    networks:
+      - devops
+
+  nexus:
+    image: sonatype/nexus3:latest
+    container_name: nexus-server
+    ports:
+      - 8081:8081
+    networks:
+      - devops
