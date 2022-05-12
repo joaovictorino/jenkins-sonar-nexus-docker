@@ -51,5 +51,7 @@ app/bank/target/bank-1.0-SNAPSHOT.jar
 ## Configurar Slack
 
 ## Compilar Spring Boot pipeline as a code
+POM
+app/bankboot/pom.xml
 
 ## Implantar em nuvem
