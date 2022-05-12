@@ -17,7 +17,10 @@ SonarQube
 verify sonar:sonar -DskipTests=true -Dsonar.projectKey=bank -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=99a2b970eec5d101b517116ede9bf47f5aa01f03
 
 ## Criar repositório Nexus
-Criar repositorio maven e usuário jenkins no nexus
+Criar repositorio e usuário jenkins no nexus
+Version policy
+Mixed
+
 Instalar plugin Nexus Artifact Uploader
 
 Jar
@@ -43,7 +46,7 @@ type
 jar
 
 file 
-target/bank-1.0-SNAPSHOT.jar
+app/bank/target/bank-1.0-SNAPSHOT.jar
 
 ## Configurar Slack
 
