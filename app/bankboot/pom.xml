@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>com.bank.account</groupId>
 			<artifactId>bank</artifactId>
-			<version>1.0-20220512.183109-1</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
