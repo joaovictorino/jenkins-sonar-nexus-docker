@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Building our image') {
             steps{
-                ws("app"){
+                dir("app"){
                     script {
                         dockerImage = docker.build registry + "/bankboot:$BUILD_NUMBER"
                     }
