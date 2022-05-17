@@ -10,6 +10,8 @@ services:
     container_name: jenkins-server
     user: root
     privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 8080:8080
       - 50000:50000

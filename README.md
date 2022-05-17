@@ -74,8 +74,7 @@ app/bankboot/pom.xml
 ## Compilar imagem Docker no Jenkins
 Instalar plugin Docker Pipeline no Jenkins
 Criar repositorio Nexus Docker
-
 Adicionar credencial global registry docker
-Criar pipeline as code com docker
+Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
 ## Implantar em nuvem
