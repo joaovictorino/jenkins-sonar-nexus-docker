@@ -17,7 +17,7 @@ services:
       - devops
 
   sonarqube:
-    image: sonarqube:latest
+    image: sonarqube:9.4.0-community
     container_name: sonarqube-server
     ports:
       - 9000:9000
@@ -27,7 +27,7 @@ services:
       - devops
 
   nexus:
-    image: sonatype/nexus3:latest
+    image: sonatype/nexus3:3.38.1
     container_name: nexus-server
     ports:
       - 8081:8081
