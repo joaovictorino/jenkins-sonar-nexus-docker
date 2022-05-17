@@ -1,7 +1,6 @@
 pipeline {
     environment {
         registry = "localhost:8081/repository/bank-docker"
-        image = "bankboot"
         registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
@@ -10,8 +9,10 @@ pipeline {
     stages {
         stage('Building our image') {
             steps{
-                script {
-                    dockerImage = docker.build registry image + ":$BUILD_NUMBER"
+                ws("app/"){
+                    script {
+                        dockerImage = docker.build registry + "/bankboot:$BUILD_NUMBER"
+                    }
                 }
             }
         }
