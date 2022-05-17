@@ -64,11 +64,18 @@ Informar dominio, token e canal
 
 Incluir notificação no final do build
 
-## Compilar Spring Boot pipeline as a code
+## Compilar Spring Boot baixando dependência do Nexus
 Jar
 package
 
 POM
 app/bankboot/pom.xml
+
+## Compilar imagem Docker no Jenkins
+Instalar plugin Docker Pipeline no Jenkins
+Criar repositorio Nexus Docker
+
+Adicionar credencial global registry docker
+Criar pipeline as code com docker
 
 ## Implantar em nuvem
