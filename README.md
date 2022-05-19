@@ -66,10 +66,10 @@ Incluir notificação no final do build
 
 ## Compilar Spring Boot baixando dependência do Nexus
 Jar
-package
+mvn clean package -pl bankboot -am -DskipTests=true
 
 POM
-app/bankboot/pom.xml
+app/pom.xml
 
 ## Compilar imagem Docker no Jenkins
 Instalar plugin Docker Pipeline no Jenkins
