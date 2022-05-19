@@ -78,3 +78,4 @@ Adicionar credencial global registry docker
 Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
 ## Implantar em nuvem
+Executar terraform apontando para Azure e criar ambiente
