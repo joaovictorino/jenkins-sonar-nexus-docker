@@ -76,6 +76,7 @@ app/pom.xml
 ## Compilar imagem Docker no Jenkins
 Instalar plugin Docker Pipeline no Jenkins
 Adicionar credencial global registry docker no Jenkins
+admin/admin123
 
 Criar repositorio Nexus Docker
 HTTP Proxy 9001
@@ -83,4 +84,10 @@ HTTP Proxy 9001
 Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
 ## Implantar em nuvem
-Executar terraform apontando para Azure e criar ambiente
+Instalar os seguintes plugins:
+Azure Credentials
+Terraform Plugin
+
+Configurar o terraform para deixar baixar automaticamente no jenkins 1.1.9 amd64
+
+Criar o Service Principal no Azure e configurar no plugin do Jenkins
