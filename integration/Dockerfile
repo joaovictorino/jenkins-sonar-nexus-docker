@@ -18,5 +18,6 @@ RUN usermod -aG docker jenkins
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+RUN echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" > /etc/apt/sources.list.d/terraform.list
+RUN apt update
 RUN apt install -y terraform

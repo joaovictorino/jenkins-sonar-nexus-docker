@@ -23,7 +23,7 @@ pipeline{
         stage('Terraform Init'){
             steps {
                 dir("infra/terraform"){
-                    withCredentials([azureServicePrincipal('azure')]) {
+                    withCredentials([azureServicePrincipal('azure_id')]) {
                         sh """
                             terraform init 
                         """
@@ -35,7 +35,7 @@ pipeline{
         stage('Terraform Validate'){
             steps {
                 dir("infra/terraform"){
-                    withCredentials([azureServicePrincipal('azure')]) {
+                    withCredentials([azureServicePrincipal('azure_id')]) {
                         sh """
                             terraform validate
                         """
@@ -55,7 +55,7 @@ pipeline{
         stage('Terraform Plan'){
             steps {
                 dir("infra/terraform"){
-                    withCredentials([azureServicePrincipal('azure')]) {
+                    withCredentials([azureServicePrincipal('azure_id')]) {
                         sh """
                             az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID           
                             terraform apply -auto-approve -var "client_id=$AZURE_CLIENT_ID" -var "client_secret=$AZURE_CLIENT_SECRET" -var "subscription_id=$AZURE_SUBSCRIPTION_ID" -var "tenant_id=$AZURE_TENANT_ID"

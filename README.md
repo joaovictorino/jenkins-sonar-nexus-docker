@@ -25,7 +25,9 @@ Mixed
 
 Online
 
-Instalar plugin Nexus Artifact Uploader
+Instalar plugin Jenkins
+Nexus Artifact Uploader
+
 Configurar usuário jenkins no passo do build
 
 Jar
@@ -59,8 +61,9 @@ Fazer upload do pom.xml no Nexus
 Criar uma conta Slack
 No Slack adicionar o App Jenkins
 
-No jenkins instalar o plugin do Slack
-Reiniciar o jenkins
+Instalar plugin Jenkins
+Slack Notification
+
 Alterar as configurações globais do Slack no jenkins
 Informar dominio, token e canal
 
@@ -74,7 +77,9 @@ POM
 app/pom.xml
 
 ## Compilar imagem Docker no Jenkins
-Instalar plugin Docker Pipeline no Jenkins
+Instalar plugin Jenkins
+Docker Pipeline
+
 Adicionar credencial global registry docker no Jenkins
 admin/admin123
 
@@ -86,10 +91,12 @@ Criar pipeline as code com docker apontando para arquivo jenkinsfile
 ## Implantar em nuvem
 Instalar os seguintes plugins:
 Azure Credentials
-Terraform Plugin
+Terraform
 
 Configurar o terraform no jenkins 
 /usr/bin/terraform
 
 Criar o Service Principal no Azure e configurar no plugin do Jenkins
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/SUBSCRIPTION_ID"
+
+Criar pipeline usando jenkinsfile de delivery
