@@ -7,76 +7,53 @@ pipeline{
         TF_HOME = tool('terraform')
         TF_IN_AUTOMATION = "true"
         PATH = "$TF_HOME:$PATH"
+        image = "auladockeracr.azurecr.io/bank:latest"
     }
     stages {
+        stage('Building our image') {
+            steps{
+                dir("app"){
+                    script {
+                        dockerImage = docker.build image
+                    }
+                }
+            }
+        }
     
         stage('Terraform Init'){
-            
             steps {
                 dir("infra/terraform"){
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'azure',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
+                    withCredentials([azureServicePrincipal('azure')]) {
                         sh """
-                                
-                        echo "Initializing Terraform"
-                        terraform init -backend-config="access_key=$ARM_ACCESS_KEY"
+                            az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID           
+                            terraform init 
                         """
-                           }
                     }
                 }
             }
         }
 
         stage('Terraform Validate'){
-            
             steps {
                 dir("infra/terraform"){
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'azure',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
+                    withCredentials([azureServicePrincipal('azure')]) {
                         sh """
-                                
-                        terraform validate
+                            terraform validate
                         """
-                           }
                     }
                 }
-             }
+            }
         }
 
         stage('Terraform Plan'){
             steps {
-                    dir("infra/terraform"){
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'azure',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-                        
+                dir("infra/terraform"){
+                    withCredentials([azureServicePrincipal('azure')]) {
                         sh """
-                        
-                        echo "Creating Terraform Plan"
-                        terraform plan -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
+                            terraform plan
                         """
-                        }
+                    }
                 }
-            }
             }
         }
 
@@ -86,31 +63,18 @@ pipeline{
                     input (message: "Deploy the infrastructure?")
                 }
             }
-        
         }
     
-
         stage('Terraform Apply'){
             steps {
-                    dir("infra/terraform"){
-                    ansiColor('xterm') {
-                    withCredentials([azureServicePrincipal(
-                    credentialsId: 'azure',
-                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                    clientIdVariable: 'ARM_CLIENT_ID',
-                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                    tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
-
+                dir("infra/terraform"){
+                    withCredentials([azureServicePrincipal('azure')]) {
                         sh """
-                        echo "Applying the plan"
-                        terraform apply -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
+                            terraform apply -auto-approve -var "client_id=$ARM_CLIENT_ID" -var "client_secret=$ARM_CLIENT_SECRET" -var "subscription_id=$ARM_SUBSCRIPTION_ID" -var "tenant_id=$ARM_TENANT_ID"
                         """
-                                }
-                }
                     }
+                }
             }
         }
-
     }
 }

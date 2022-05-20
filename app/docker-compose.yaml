@@ -1,25 +1,25 @@
 version: '3'
 
 networks:
-  springapi:
+  bankapi:
     driver: bridge
 
 services:
   mysqldb:
     image: mysql:8.0
     networks:
-      - springapi
+      - bankapi
     environment:
       - MYSQL_ROOT_PASSWORD=teste123
       - MYSQL_DATABASE=account
       - MYSQL_TCP_PORT=3306
 
-  springapi:
+  bankapi:
     build:
       context: .
     restart: on-failure
     networks:
-      - springapi
+      - bankapi
     environment:
       - MYSQL_URL=jdbc:mysql://mysqldb:3306/account
       - MYSQL_USER=root

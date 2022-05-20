@@ -90,8 +90,8 @@ resource "azurerm_container_group" "example" {
   }
 
   container {
-    name   = "springapp"
-    image  = "auladockeracr.azurecr.io/springapp:latest"
+    name   = "bank"
+    image  = "auladockeracr.azurecr.io/bank:latest"
     cpu    = "0.5"
     memory = "1.5"
     
