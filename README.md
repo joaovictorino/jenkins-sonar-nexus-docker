@@ -14,7 +14,7 @@ JaCoCo
 jacoco:prepare-agent install jacoco:report
 
 SonarQube
-verify sonar:sonar -DskipTests=true -Dsonar.projectKey=bank -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=2f2d9517b58792344337945be6d795f73605c29d
+verify sonar:sonar -DskipTests=true -Dsonar.projectKey=bank -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=d184c9320e387312065a4ee0ea115ae95a64c0ad
 
 ## Criar repositório Nexus
 Criar repositorio e usuário jenkins no nexus
@@ -41,7 +41,7 @@ Groupid
 com.bank.account
 
 Version
-1.0-SNAPSHOT
+1.0
 
 Repository
 bank
@@ -53,9 +53,17 @@ type
 jar
 
 file 
-app/bank/target/bank-1.0-SNAPSHOT.jar
+app/bank/target/bank-1.0.jar
 
 Fazer upload do pom.xml no Nexus
+ArtifactID
+bank
+
+type
+pom
+
+file 
+app/bank/pom.xml
 
 ## Configurar Slack
 Criar uma conta Slack
@@ -71,7 +79,7 @@ Incluir notificação no final do build
 
 ## Compilar Spring Boot baixando dependência do Nexus
 Jar
-mvn clean package -pl bankboot -am -DskipTests=true
+clean package -pl bankboot -am -DskipTests=true
 
 POM
 app/pom.xml
@@ -85,6 +93,7 @@ admin/admin123
 
 Criar repositorio Nexus Docker
 HTTP Proxy 9001
+Pull anônimo
 
 Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
