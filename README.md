@@ -53,6 +53,8 @@ jar
 file 
 app/bank/target/bank-1.0-SNAPSHOT.jar
 
+Fazer upload do pom.xml no Nexus
+
 ## Configurar Slack
 Criar uma conta Slack
 No Slack adicionar o App Jenkins
@@ -73,8 +75,11 @@ app/pom.xml
 
 ## Compilar imagem Docker no Jenkins
 Instalar plugin Docker Pipeline no Jenkins
+Adicionar credencial global registry docker no Jenkins
+
 Criar repositorio Nexus Docker
-Adicionar credencial global registry docker
+HTTP Proxy 9001
+
 Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
 ## Implantar em nuvem

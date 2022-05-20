@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        registry = "localhost:8081/repository/bank-docker"
+        registry = "localhost:9001"
         registryCredential = 'registry_id'
         dockerImage = ''
     }
