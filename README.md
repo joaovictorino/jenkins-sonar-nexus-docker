@@ -95,6 +95,8 @@ Criar repositorio Nexus Docker
 HTTP Proxy 9001
 Pull anônimo
 
+Habilitar Docker Bearer no Nexus
+
 Criar pipeline as code com docker apontando para arquivo jenkinsfile
 
 ## Implantar em nuvem
