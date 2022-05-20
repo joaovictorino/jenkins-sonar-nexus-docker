@@ -87,7 +87,6 @@ Criar pipeline as code com docker apontando para arquivo jenkinsfile
 Instalar os seguintes plugins:
 Azure Credentials
 Terraform Plugin
-AnsiColor
 
 Configurar o terraform para deixar baixar automaticamente no jenkins 1.1.9 amd64
 
