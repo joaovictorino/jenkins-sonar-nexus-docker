@@ -14,20 +14,20 @@ pipeline{
             
             steps {
                     ansiColor('xterm') {
-                        withCredentials([azureServicePrincipal(
-                                                                    credentialsId: 'azure',
-                                                                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
-                                                                    clientIdVariable: 'ARM_CLIENT_ID',
-                                                                    clientSecretVariable: 'ARM_CLIENT_SECRET',
-                                                                    tenantIdVariable: 'ARM_TENANT_ID'
-                                                                ), string(credentialsId: 'azure', variable: 'ARM_ACCESS_KEY')]) {
-                            
-                            sh """
-                                    
-                            echo "Initialising Terraform"
-                            terraform init -chdir="./infra/terraform" -backend-config="access_key=$ARM_ACCESS_KEY"
-                            """
-                            }
+                    withCredentials([azureServicePrincipal(
+                    credentialsId: 'azure',
+                    subscriptionIdVariable: 'ARM_SUBSCRIPTION_ID',
+                    clientIdVariable: 'ARM_CLIENT_ID',
+                    clientSecretVariable: 'ARM_CLIENT_SECRET',
+                    tenantIdVariable: 'ARM_TENANT_ID'
+                ), string(credentialsId: 'azure', variable: 'ARM_ACCESS_KEY')]) {
+                        
+                        sh """
+                                
+                        echo "Initialising Terraform"
+                        terraform init -chdir="./infra/terraform" -backend-config="access_key=$ARM_ACCESS_KEY"
+                        """
+                           }
                     }
              }
         }
@@ -42,7 +42,7 @@ pipeline{
                     clientIdVariable: 'ARM_CLIENT_ID',
                     clientSecretVariable: 'ARM_CLIENT_SECRET',
                     tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'azure', variable: 'ARM_ACCESS_KEY')]) {
+                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
                         
                         sh """
                                 
@@ -63,7 +63,7 @@ pipeline{
                     clientIdVariable: 'ARM_CLIENT_ID',
                     clientSecretVariable: 'ARM_CLIENT_SECRET',
                     tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'azure', variable: 'ARM_ACCESS_KEY')]) {
+                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
                         
                         sh """
                         
@@ -94,7 +94,7 @@ pipeline{
                     clientIdVariable: 'ARM_CLIENT_ID',
                     clientSecretVariable: 'ARM_CLIENT_SECRET',
                     tenantIdVariable: 'ARM_TENANT_ID'
-                ), string(credentialsId: 'azure', variable: 'ARM_ACCESS_KEY')]) {
+                ), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
 
                         sh """
                         echo "Applying the plan"
