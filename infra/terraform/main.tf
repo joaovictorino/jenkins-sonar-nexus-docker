@@ -125,6 +125,6 @@ resource "null_resource" "upload_image" {
         order = azurerm_container_registry.acr.id
     }
     provisioner "local-exec" {
-      command = "az acr login --name auladockeracr && docker push auladockeracr.azurecr.io/springapp:latest && sleep 20"
+      command = "az acr login --name auladockeracr && docker push auladockeracr.azurecr.io/bank:latest && sleep 20"
     }
 }
