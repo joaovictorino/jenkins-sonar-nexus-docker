@@ -20,7 +20,7 @@ pipeline {
         stage('Deploy our image') {
             steps{
                 script {
-                    docker.withRegistry( "http://" + registry + "/bankboot:$BUILD_NUMBER", registryCredential ) {
+                    docker.withRegistry( "http://" + registry, registryCredential ) {
                         dockerImage.push()
                     }
                 }
