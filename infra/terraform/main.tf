@@ -120,11 +120,20 @@ resource "azurerm_container_group" "example" {
   ]
 }
 
-resource "null_resource" "upload_image" {
+resource "null_resource" "login_registry" {
     triggers = {
         order = azurerm_container_registry.acr.id
     }
     provisioner "local-exec" {
-      command = "az acr login --name auladockeracr && docker push auladockeracr.azurecr.io/bank:latest && sleep 20"
+      command = "az acr login --name auladockeracr"
+    }
+}
+
+resource "null_resource" "upload_image" {
+    triggers = {
+        order = null_resource.login_registry.id
+    }
+    provisioner "local-exec" {
+      command = "docker push auladockeracr.azurecr.io/bank:latest && sleep 20"
     }
 }

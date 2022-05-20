@@ -88,6 +88,8 @@ Instalar os seguintes plugins:
 Azure Credentials
 Terraform Plugin
 
-Configurar o terraform para deixar baixar automaticamente no jenkins 1.1.9 amd64
+Configurar o terraform no jenkins 
+/usr/bin/terraform
 
-Criar o Service Principal no Azure e configurar no plugin do Jenkins (rever)
+Criar o Service Principal no Azure e configurar no plugin do Jenkins
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/SUBSCRIPTION_ID"
