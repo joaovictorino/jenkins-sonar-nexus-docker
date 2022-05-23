@@ -1,6 +1,14 @@
-# Como criar um pipeline com Jenkins, Git, SonarQube e Nexus
+# How to create a pipeline with Jenkins, Git, SonarQube, Nexus, Docker, Terraform and Azure
+
+## Run Jenkins, SonarQube and Nexus
+Navigate to integration folder and execute
+
+````sh
+docker-compose up --build
+````
 
 ## Jenkins
+Configure java home folder
 export JAVA_HOME=/opt/jdk-14
 
 GitHub
