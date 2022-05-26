@@ -7,45 +7,59 @@ Navigate to integration folder and execute
 docker-compose up --build
 ````
 
-## Jenkins
-Configure java home folder
-export JAVA_HOME=/opt/jdk-14
+## Running Jenkins
+Access Jenkins on http://localhost:8080
+Activate Git and Pipeline plugins during first configuration
 
-GitHub
+Go to Manage Jenkins -> Global Tool Configuration
+Add JDK with the following path /opt/jdk-14
+
+Create a New Item (Freestyle) on Jenkins Dashboard:
+GitHub Repository
 https://github.com/joaovictorino/jenkins-sonar-nexus-docker.git
 
-POM
+Add build step with maven targets:
+Goals
+test
+
+POM file
 app/bank/pom.xml
 
-## Criar Projeto Sonar
-JaCoCo
+Run the job
+
+## Add project to SonarQube
+
+Open the item before and configure other build step with maven, copy the same pom file path:
+Goal
 jacoco:prepare-agent install jacoco:report
 
-SonarQube
-verify sonar:sonar -DskipTests=true -Dsonar.projectKey=bank -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=d184c9320e387312065a4ee0ea115ae95a64c0ad
+Access address of SonarQube http://localhost:9000, change user password and create a project manually with maven setup, get the login id token.
 
-## Criar repositório Nexus
-Criar repositorio e usuário jenkins no nexus
+Go back to Jenkins and add more one build step with maven, change login with the id token of SonarQube, copy the same pom file path:
+verify sonar:sonar -DskipTests=true -Dsonar.projectKey=bank -Dsonar.host.url=http://sonarqube:9000 -Dsonar.login=f70531932e609e7df8661eccbd6d2beea534000e
 
-Repositorio Nexus
-Version policy
-Mixed
+Run the job and look SonarQube project dashboard
 
-Online
+## Create Nexus Repository
 
-Instalar plugin Jenkins
-Nexus Artifact Uploader
+Access address http://localhost:8081 and change user password.
 
-Configurar usuário jenkins no passo do build
+Create repository maven2 (hosted) and allow redeploy
 
+Install "Nexus Artifact Uploader" on Jenkins (Manage Jenkins -> Manage Plugins)
+
+Configure new build step to generate jar file, copy the same pom file:
 Jar
 package -DskipTests=true
 
-Nexus
+Add new build step for Nexus Artifact Uploader, following properties:
+Nexus 3
 URL
 nexus:8081
 
-Groupid
+Add credentials to Nexus user (admin)
+
+GroupId
 com.bank.account
 
 Version
@@ -54,6 +68,7 @@ Version
 Repository
 bank
 
+Add artifacts:
 ArtifactID
 bank
 
@@ -63,7 +78,7 @@ jar
 file 
 app/bank/target/bank-1.0.jar
 
-Fazer upload do pom.xml no Nexus
+Upload pom.xml to Nexus:
 ArtifactID
 bank
 
@@ -73,49 +88,79 @@ pom
 file 
 app/bank/pom.xml
 
-## Configurar Slack
-Criar uma conta Slack
-No Slack adicionar o App Jenkins
+Run the job and look jar inside Nexus repoository
 
-Instalar plugin Jenkins
-Slack Notification
+## Configure Slack Notification
+Create Slack account
+Add Jenkins app inside Slack
 
-Alterar as configurações globais do Slack no jenkins
-Informar dominio, token e canal
+Install Slack Notification at Jenkins
 
-Incluir notificação no final do build
+Update configuration of Slack plugin at Jenkins (Manage Jenkins -> Configure System)
+Set workspace, credential token and channel
 
-## Compilar Spring Boot baixando dependência do Nexus
-Jar
+Configure job with post build step (Slack Notification) check important notifications
+
+Run the job and look Slack channel
+
+## Build Spring Boot downloading dependency from Nexus
+Create new item (freestyle) triggered by previous job, add the same GitHub repository
+GitHub Repository
+https://github.com/joaovictorino/jenkins-sonar-nexus-docker.git
+
+Add build step with maven goal bellow:
 clean package -pl bankboot -am -DskipTests=true
 
 POM
 app/pom.xml
 
-## Compilar imagem Docker no Jenkins
-Instalar plugin Jenkins
-Docker Pipeline
+## Build Docker images inside Jenkins
+Install Docker Pipeline plugin at Jenkins
 
-Adicionar credencial global registry docker no Jenkins
-admin/admin123
+Create repository Docker inside Nexus, type docker (hosted)
+Check HTTP option, with port 9001
+Enable anonymous pull
+Got to Security -> Realms enable Docker Bearer
 
-Criar repositorio Nexus Docker
-HTTP Proxy 9001
-Pull anônimo
+Go back to Jenkins and create new item as pipeline type, triggered by previous job for Spring Boot, add the same GitHub repository
+GitHub Repository
+https://github.com/joaovictorino/jenkins-sonar-nexus-docker.git
 
-Habilitar Docker Bearer no Nexus
+Set pipeline definition from SCM Git
+Script path
+integration/Jenkinsfile
 
-Criar pipeline as code com docker apontando para arquivo jenkinsfile
+Run the job and look Docker repository inside Nexus
 
-## Implantar em nuvem
-Instalar os seguintes plugins:
-Azure Credentials
-Terraform
+## Deploy at Azure Cloud
+Install at Jenkins the plugins bellow:
+- Azure Credentials
+- Terraform
 
-Configurar o terraform no jenkins 
+Set terraform path (Manage Jenkins -> Global Tool Configuration)
 /usr/bin/terraform
 
-Criar o Service Principal no Azure e configurar no plugin do Jenkins
+Create a Service Principal at Azure and set inside Jenkins plugin (Manage Jenkins -> Manage Credentials -> (global) -> Add credential -> Azure Service Principal)
 az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/SUBSCRIPTION_ID"
 
-Criar pipeline usando jenkinsfile de delivery
+Set the fields: SubscriptionId, ClientId, Client Secret and TenantId from Azure Account
+Set the name azure_id, test the connection.
+
+Create new item as pipeline type, triggered by previous job for Spring Boot, add the same GitHub repository
+GitHub Repository
+https://github.com/joaovictorino/jenkins-sonar-nexus-docker.git
+
+Set pipeline definition from SCM Git
+Script path
+integration/delivery/Jenkinsfile
+
+Create terraform repository inside Nexus following properties:
+Type raw (hosted)
+Name terraform
+
+Run the job and look terraform repository inside Nexus
+
+Access the application
+````sh
+curl http://aulainfraacg.eastus.azurecontainer.io:8080/account/123456
+````
