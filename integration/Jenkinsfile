@@ -10,16 +10,18 @@ pipeline {
     stages {
         stage('Building our image') {
             steps{
-                dir("app"){
-                    script {
-                        dockerImage = docker.build registry + "/bankboot:$BUILD_NUMBER"
+                step{
+                    dir("app"){
+                        script {
+                            dockerImage = docker.build registry + "/bankboot:$BUILD_NUMBER"
+                        }
                     }
                 }
-            }
-            steps{
-                dir("app"){
-                    script {
-                        dockerImageLatest = docker.build registry + "/bankboot:latest"
+                step{
+                    dir("app"){
+                        script {
+                            dockerImageLatest = docker.build registry + "/bankboot:latest"
+                        }
                     }
                 }
             }
@@ -33,21 +35,11 @@ pipeline {
                     }
                 }
             }
-            steps{
-                script {
-                    docker.withRegistry("http://" + registry, registryCredential ) {
-                        dockerImageLatest.push()
-                    }
-                }
-            }
         }
 
         stage('Cleaning up') {
             steps{
                 sh "docker rmi $registry/bankboot:$BUILD_NUMBER"
-            }
-            steps{
-                sh "docker rmi $registry/bankboot:latest"
             }
         }
     }
