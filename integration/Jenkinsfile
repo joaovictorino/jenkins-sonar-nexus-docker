@@ -1,7 +1,7 @@
 pipeline {
     environment {
         registry = "localhost:9001"
-        registryCredential = 'registry_id'
+        registryCredential = 'nexus'
         dockerImage = ''
     }
 
