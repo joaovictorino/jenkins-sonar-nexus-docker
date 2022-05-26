@@ -3,6 +3,7 @@ pipeline {
         registry = "localhost:9001"
         registryCredential = 'nexus'
         dockerImage = ''
+        dockerImageLatest = ''
     }
 
     agent any
@@ -12,6 +13,13 @@ pipeline {
                 dir("app"){
                     script {
                         dockerImage = docker.build registry + "/bankboot:$BUILD_NUMBER"
+                    }
+                }
+            }
+            steps{
+                dir("app"){
+                    script {
+                        dockerImageLatest = docker.build registry + "/bankboot:latest"
                     }
                 }
             }
@@ -25,11 +33,21 @@ pipeline {
                     }
                 }
             }
+            steps{
+                script {
+                    docker.withRegistry("http://" + registry, registryCredential ) {
+                        dockerImageLatest.push()
+                    }
+                }
+            }
         }
 
         stage('Cleaning up') {
             steps{
                 sh "docker rmi $registry/bankboot:$BUILD_NUMBER"
+            }
+            steps{
+                sh "docker rmi $registry/bankboot:latest"
             }
         }
     }
