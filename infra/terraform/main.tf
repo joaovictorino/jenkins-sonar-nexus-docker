@@ -7,6 +7,14 @@ terraform {
       version = ">= 2.26"
     }
   }
+
+  backend "artifactory" {
+    url = "http://nexus:8081/repository/"
+    repo = "terraform"
+    subpath = "jenkins"
+    username = "admin"
+    password = "admin123"
+  }
 }
 
 provider "azurerm" {
